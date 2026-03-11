@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --color-calm-teal: #5EEAD4;
+  --color-calm-blue: #7DD3FC;
+  --color-calm-purple: #C4B5FD;
+  --color-calm-pink: #F9A8D4;
+  --color-calm-indigo: #A5B4FC;
+  --color-soft-teal: #CCFBF1;
+  --color-soft-blue: #DBEAFE;
+  --color-soft-purple: #EDE9FE;
+  --color-glass-white: rgba(255, 255, 255, 0.05);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glow: glow 3s ease-in-out infinite alternate;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-spin-slow: spin 8s linear infinite;
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes glow {
+    0% {
+      box-shadow: 0 0 20px rgba(94, 234, 212, 0.3);
+    }
+
+    100% {
+      box-shadow: 0 0 40px rgba(94, 234, 212, 0.6);
+    }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white overflow-hidden;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-md rounded-2xl border shadow-2xl transition-all duration-300 ease-in-out;
+    background-color: var(--color-glass-white);
+    border-color: var(--color-glass-border);
+  }
+
+  .floating-card {
+    @apply animate-float;
+  }
+
+  .glow-effect {
+    @apply shadow-lg;
+    box-shadow: 0 10px 15px -3px rgba(94, 234, 212, 0.3), 0 4px 6px -4px rgba(94, 234, 212, 0.3);
+  }
+
+  .sidebar-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-white/80 cursor-pointer;
+  }
+
+  .sidebar-item:hover {
+    @apply backdrop-blur-sm scale-105 text-white;
+    background-color: var(--color-glass-white);
+  }
+
+  .sidebar-item.active {
+    @apply backdrop-blur-sm text-white;
+    background-color: var(--color-glass-white);
+  }
+}
