@@ -3,44 +3,71 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Environment, Float, PerspectiveCamera } from '@react-three/drei';
 import * as THREE from 'three';
 
-function WellnessModel({ modelUrl }) {
-  const meshRef = useRef();
-  const [model, setModel] = useState(null);
-
-  useEffect(() => {
-    // Create a placeholder geometry since we don't have an actual model
-    // In production, you would load a .glb/.gltf file here
-    const geometry = new THREE.IcosahedronGeometry(2, 1);
-    const material = new THREE.MeshPhongMaterial({
-      color: 0x5EEAD4,
-      emissive: 0x5EEAD4,
-      emissiveIntensity: 0.2,
-      shininess: 100,
-      opacity: 0.8,
-      transparent: true
-    });
-    
-    const mesh = new THREE.Mesh(geometry, material);
-    setModel(mesh);
-  }, []);
+function HumanoidModel() {
+  const groupRef = useRef();
 
   useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += 0.005;
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
+    if (groupRef.current) {
+      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
+      groupRef.current.rotation.y += 0.005;
     }
   });
 
-  if (!model) return null;
+  const materialProps = {
+    color: '#5EEAD4',
+    emissive: '#5EEAD4',
+    emissiveIntensity: 0.2,
+    roughness: 0.2,
+    metalness: 0.8,
+    transparent: true,
+    opacity: 0.85
+  };
 
   return (
     <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-      <primitive 
-        ref={meshRef} 
-        object={model} 
-        scale={[1.5, 1.5, 1.5]}
-        position={[0, 0, 0]}
-      />
+      <group ref={groupRef} scale={[0.8, 0.8, 0.8]} position={[0, -1, 0]}>
+        {/* Head */}
+        <mesh position={[0, 3.2, 0]}>
+          <sphereGeometry args={[0.4, 32, 32]} />
+          <meshStandardMaterial {...materialProps} />
+        </mesh>
+        
+        {/* Neck */}
+        <mesh position={[0, 2.6, 0]}>
+          <cylinderGeometry args={[0.12, 0.15, 0.4]} />
+          <meshStandardMaterial {...materialProps} />
+        </mesh>
+
+        {/* Torso */}
+        <mesh position={[0, 1.4, 0]}>
+          <capsuleGeometry args={[0.55, 1.6, 4, 16]} />
+          <meshStandardMaterial {...materialProps} />
+        </mesh>
+
+        {/* Left Arm */}
+        <mesh position={[-0.9, 1.6, 0]} rotation={[0, 0, 0.25]}>
+          <capsuleGeometry args={[0.18, 1.4, 4, 16]} />
+          <meshStandardMaterial {...materialProps} />
+        </mesh>
+
+        {/* Right Arm */}
+        <mesh position={[0.9, 1.6, 0]} rotation={[0, 0, -0.25]}>
+          <capsuleGeometry args={[0.18, 1.4, 4, 16]} />
+          <meshStandardMaterial {...materialProps} />
+        </mesh>
+
+        {/* Left Leg */}
+        <mesh position={[-0.25, -0.6, 0]}>
+          <capsuleGeometry args={[0.22, 1.8, 4, 16]} />
+          <meshStandardMaterial {...materialProps} />
+        </mesh>
+
+        {/* Right Leg */}
+        <mesh position={[0.25, -0.6, 0]}>
+          <capsuleGeometry args={[0.22, 1.8, 4, 16]} />
+          <meshStandardMaterial {...materialProps} />
+        </mesh>
+      </group>
     </Float>
   );
 }
@@ -100,7 +127,7 @@ const WellnessVisualization = () => {
         />
         
         {/* Main wellness model */}
-        <WellnessModel />
+        <HumanoidModel />
         
         {/* Particle effects */}
         <ParticleField />

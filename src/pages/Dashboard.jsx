@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
-import WellnessVisualization from '../components/WellnessVisualization';
+import HumanModel from '../components/HumanModel';
 import HealthCards from '../components/HealthCards';
 import InsightsPanel from '../components/InsightsPanel';
 import NutritionScanner from '../components/NutritionScanner';
 import AIPanel from '../components/AIPanel';
 import { auth } from '../firebase/firebaseConfig';
 import { signOut } from 'firebase/auth';
-import { Heart } from 'lucide-react';
+import { Heart, MessageCircle, Dumbbell, Calendar } from 'lucide-react';
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -29,7 +29,7 @@ const Dashboard = () => {
           <div className="flex-1 flex">
             {/* Center 3D Visualization */}
             <div className="flex-1 relative">
-              <WellnessVisualization />
+              <HumanModel moodScore="High" />
             </div>
 
             {/* Right Health Cards Panel */}
@@ -62,6 +62,63 @@ const Dashboard = () => {
             </div>
           </div>
         );
+      case 'diet':
+        return (
+          <div className="flex-1 flex flex-col items-center justify-center p-8">
+            <div className="glass-card p-12 max-w-lg w-full text-center space-y-6">
+              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-calm-teal to-calm-blue rounded-3xl flex items-center justify-center shadow-glow mb-6">
+                <MessageCircle className="w-10 h-10 text-white" />
+              </div>
+              <h2 className="text-3xl font-bold text-white mb-2">Diet Chat</h2>
+              <p className="text-white/70 text-lg mb-8">Chat with your personalized AI Nutritionist to get meal plans tailored to your body metrics.</p>
+
+              <button
+                onClick={() => window.location.href = '/diet-chat'}
+                className="w-full py-4 rounded-xl font-bold text-slate-900 bg-gradient-to-r from-calm-teal to-calm-blue shadow-glow transform transition-transform hover:scale-105"
+              >
+                Open Diet Chat
+              </button>
+            </div>
+          </div>
+        );
+      case 'exercise':
+        return (
+          <div className="flex-1 flex flex-col items-center justify-center p-8">
+            <div className="glass-card p-12 max-w-lg w-full text-center space-y-6">
+              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-calm-purple to-calm-pink rounded-3xl flex items-center justify-center shadow-glow mb-6">
+                <Dumbbell className="w-10 h-10 text-white" />
+              </div>
+              <h2 className="text-3xl font-bold text-white mb-2">Exercise Plan</h2>
+              <p className="text-white/70 text-lg mb-8">Generate AI-powered workout routines specifically for your weight, height, and goals.</p>
+
+              <button
+                onClick={() => window.location.href = '/exercise'}
+                className="w-full py-4 rounded-xl font-bold text-slate-900 bg-gradient-to-r from-calm-purple to-calm-pink shadow-glow transform transition-transform hover:scale-105"
+              >
+                Open Exercise Plan
+              </button>
+            </div>
+          </div>
+        );
+      case 'weekly':
+        return (
+          <div className="flex-1 flex flex-col items-center justify-center p-8">
+            <div className="glass-card p-12 max-w-lg w-full text-center space-y-6">
+              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-calm-teal to-calm-purple rounded-3xl flex items-center justify-center shadow-glow mb-6">
+                <Calendar className="w-10 h-10 text-white" />
+              </div>
+              <h2 className="text-3xl font-bold text-white mb-2">Weekly Report</h2>
+              <p className="text-white/70 text-lg mb-8">Review your complete wellness and emotional trends from the past 7 days, summarized by AI.</p>
+
+              <button
+                onClick={() => window.location.href = '/weekly-report'}
+                className="w-full py-4 rounded-xl font-bold text-slate-900 bg-gradient-to-r from-calm-teal to-calm-blue shadow-glow transform transition-transform hover:scale-105"
+              >
+                Open Weekly Report
+              </button>
+            </div>
+          </div>
+        );
       case 'nutrition':
         return <NutritionScanner />;
       case 'ai':
@@ -80,6 +137,13 @@ const Dashboard = () => {
     }
   };
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 18) return 'Good Afternoon';
+    return 'Good Evening';
+  };
+
   return (
     <div className="flex h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
       <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} onLogout={handleLogout} />
@@ -90,7 +154,7 @@ const Dashboard = () => {
         <header className="flex justify-between items-center mb-8 glass-card p-4 mx-2">
           <div>
             <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-calm-teal to-calm-blue">
-              Good Morning, {user?.displayName || user?.email?.split('@')[0]}
+              {getGreeting()}, {user?.displayName || user?.email?.split('@')[0]}
             </h1>
             <p className="text-white/60 text-sm mt-1">Your wellness twin is analyzing your data.</p>
           </div>

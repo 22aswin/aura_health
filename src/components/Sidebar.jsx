@@ -8,7 +8,10 @@ import {
   Droplets,
   Moon,
   Activity,
-  Smile
+  Smile,
+  MessageCircle,
+  Dumbbell,
+  Calendar
 } from 'lucide-react';
 
 const Sidebar = ({ activeSection, setActiveSection, onLogout }) => {
@@ -17,19 +20,22 @@ const Sidebar = ({ activeSection, setActiveSection, onLogout }) => {
     { id: 'mood', label: 'Mood Check', icon: Heart },
     { id: 'nutrition', label: 'Nutrition Scanner', icon: Camera },
     { id: 'ai', label: 'AI Assistant', icon: Bot },
+    { id: 'diet', label: 'Diet Chat', icon: MessageCircle },
+    { id: 'exercise', label: 'Exercise Plan', icon: Dumbbell },
+    { id: 'weekly', label: 'Weekly Report', icon: Calendar },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
   return (
-    <div className="w-64 h-screen bg-glass-white backdrop-blur-lg border-r border-glass-border p-6">
-      <div className="mb-8">
+    <div className="w-64 h-screen bg-glass-white backdrop-blur-lg border-r border-glass-border p-6 flex flex-col">
+      <div className="mb-8 flex-shrink-0">
         <h1 className="text-2xl font-bold bg-gradient-to-r from-calm-teal to-calm-purple bg-clip-text text-transparent">
           Wellness Hub
         </h1>
         <p className="text-white/60 text-sm mt-1">Your Health Companion</p>
       </div>
 
-      <nav className="space-y-2">
+      <nav className="space-y-2 flex-1 overflow-y-auto pr-2 mb-4 scrollbar-hide">
         {menuItems.map((item) => {
           const Icon = item.icon;
           return (
@@ -45,7 +51,7 @@ const Sidebar = ({ activeSection, setActiveSection, onLogout }) => {
         })}
       </nav>
 
-      <div className="absolute bottom-6 left-6 right-6">
+      <div className="flex-shrink-0 mt-auto pt-2">
         <div className="glass-card p-4">
           <div className="flex items-center justify-between mb-3">
             <span className="text-sm font-medium text-white/80">Quick Stats</span>

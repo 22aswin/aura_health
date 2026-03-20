@@ -6,6 +6,9 @@ import Login from './pages/Login';
 import Onboarding from './pages/Onboarding';
 import Dashboard from './pages/Dashboard';
 import MoodCheck from './pages/MoodCheck';
+import DietChat from './pages/DietChat';
+import Exercise from './pages/Exercise';
+import WeeklyReport from './pages/WeeklyReport';
 
 function App() {
     return (
@@ -23,6 +26,9 @@ function App() {
                 <Route element={<AuthGuard requireProfile={true} />}>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/mood-check" element={<MoodCheck />} />
+                    <Route path="/diet-chat" element={<DietChat />} />
+                    <Route path="/exercise" element={<Exercise />} />
+                    <Route path="/weekly-report" element={<WeeklyReport />} />
                 </Route>
 
                 {/* Default Redirect to Dashboard (AuthGuard handles bounces) */}
